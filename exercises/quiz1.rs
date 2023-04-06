@@ -13,8 +13,14 @@
 // I AM NOT DONE
 
 // Put your function here!
-// fn calculate_price_of_apples {
-
+fn calculate_price_of_apples(item: i32) -> i32 {
+    let price = if item <= 40 {
+        item*2
+    } else {
+        item*1
+    };
+    price
+}
 // Don't modify this function!
 #[test]
 fn verify_test() {
