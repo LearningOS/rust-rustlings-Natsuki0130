@@ -16,7 +16,7 @@ fn main() {
 
     println!("{} has length {} content `{:?}`", "vec1", vec1.len(), vec1);
 }
-
+//
 fn fill_vec(ved: &mut Vec<i32>) -> Vec<i32> {
     let mut vec = ved;
 
@@ -25,4 +25,7 @@ fn fill_vec(ved: &mut Vec<i32>) -> Vec<i32> {
     vec.push(66);
 
     vec.to_vec()
+    //也可以直接对利用该函数直接借用vec0并对其进行填充
+    //vec.clone()
+    //不让其传入vec0，用类似move_semanyics4的方式来直接新建一个Vec<>来赋值
 }
