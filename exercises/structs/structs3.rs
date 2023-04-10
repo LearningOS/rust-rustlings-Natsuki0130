@@ -4,7 +4,7 @@
 // Make the code compile and the tests pass!
 // Execute `rustlings hint structs3` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
+// 此处训练为方法实战
 
 #[derive(Debug)]
 struct Package {
