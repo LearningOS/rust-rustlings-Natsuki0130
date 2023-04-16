@@ -4,11 +4,9 @@
 // Why not? What should we do to fix it?
 // Execute `rustlings hint errors3` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
-
 use std::num::ParseIntError;
 
-fn main() {
+fn main() -> Result<(), ParseIntError>{ //
     let mut tokens = 100;
     let pretend_user_input = "8";
 
@@ -20,6 +18,7 @@ fn main() {
         tokens -= cost;
         println!("You now have {} tokens.", tokens);
     }
+    Ok(())
 }
 
 pub fn total_cost(item_quantity: &str) -> Result<i32, ParseIntError> {
@@ -29,3 +28,5 @@ pub fn total_cost(item_quantity: &str) -> Result<i32, ParseIntError> {
 
     Ok(qty * cost_per_item + processing_fee)
 }
+//从hint的提示来看，实在main函数后面定义一个返回值为Result<(), ParseIntError>,并返回Ok(())
+//也可以对第15行的语句段进行处理，将其值unwrp()出来，也可以在if的比较中将cost作为一个Ok()值
