@@ -10,7 +10,7 @@ use std::time::Duration;
 
 fn main() {
 
-    let mut handles = vec![];
+    let mut handles: Vec<T> = vec![];
     for i in 0..10 {
         thread::spawn(move || {
             thread::sleep(Duration::from_millis(250));
