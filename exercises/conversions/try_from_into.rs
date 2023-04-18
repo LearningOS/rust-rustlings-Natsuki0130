@@ -6,6 +6,7 @@
 // Execute `rustlings hint try_from_into` or use the `hint` watch subcommand for a hint.
 
 use std::convert::{TryFrom, TryInto};
+use std::num::TryFromIntError;
 
 #[derive(Debug, PartialEq)]
 struct Color {
@@ -23,7 +24,6 @@ enum IntoColorError {
     IntConversion,
 }
 
-// I AM NOT DONE
 
 // Your task is to complete this implementation
 // and return an Ok result of inner type Color.
@@ -35,16 +35,93 @@ enum IntoColorError {
 // Also note that correct RGB color values must be integers in the 0..=255 range.
 
 // Tuple implementation
+
+fn tuple_range(t: (i16, i16, i16)) -> Result<Vec<u8>, TryFromIntError>
+{
+
+    let temp_vec = vec![t.0, t.1, t.2];
+    let mut temp_vec2 = vec![];
+
+    for num in temp_vec.into_iter()
+    {
+        match u8::try_from(num)
+        {
+            Ok(n) => temp_vec2.push(n),
+            Err(e)    => return Err(e)
+        };
+    }
+    Ok(temp_vec2)
+}
+
+fn array_range(a: [i16; 3]) -> Result<[u8; 3], TryFromIntError>
+{
+
+    let mut c = [0, 0, 0];
+    let mut index: usize = 0;
+
+    for n in a
+    {
+         
+        match u8::try_from(n)
+        {
+            Ok(n) =>  { c[index] = n; },
+            Err(e) => return Err(e),
+        }
+        index += 1;
+    }
+
+    Ok(c)
+
+}
+
+fn slice_range(slice: &[i16]) -> Result<[u8; 3], TryFromIntError>
+{
+    let mut c = [0, 0, 0];
+    let mut index: usize = 0;
+
+    for n in slice
+    {
+         
+        match u8::try_from(*n)
+        {
+            Ok(n) =>  { c[index] = n; },
+            Err(e) => return Err(e),
+        }
+        index += 1;
+    }
+
+    Ok(c)
+}
+
 impl TryFrom<(i16, i16, i16)> for Color {
     type Error = IntoColorError;
     fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {
+        match tuple_range(tuple)
+        {
+            Ok(v) => 
+            {
+                return Ok( Color{ red: v[0], green: v[1], blue: v[2]} );
+            }
+
+            Err(_e) => { return Err(IntoColorError::IntConversion); }
+        }
     }
 }
 
 // Array implementation
 impl TryFrom<[i16; 3]> for Color {
     type Error = IntoColorError;
-    fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {
+    fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> 
+    {
+        match array_range(arr)
+        {
+            Ok(v) => 
+            {
+                return Ok( Color{ red: v[0], green: v[1], blue: v[2]} );
+            }
+
+            Err(_e) => { return Err(IntoColorError::IntConversion); }
+        }
     }
 }
 
@@ -52,6 +129,20 @@ impl TryFrom<[i16; 3]> for Color {
 impl TryFrom<&[i16]> for Color {
     type Error = IntoColorError;
     fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {
+        if slice.len() != 3
+        {
+            return Err(Self::Error::BadLen);
+        }
+
+        match slice_range(slice)
+        {
+            Ok(v) => 
+            {
+                return Ok( Color{ red: v[0], green: v[1], blue: v[2]} );
+            }
+
+            Err(_e) => { return Err(IntoColorError::IntConversion); }
+        }
     }
 }
 
